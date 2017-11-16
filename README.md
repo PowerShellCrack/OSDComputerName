@@ -1,2 +1,4 @@
 # OSD
-Used specifically for MDT and SCCM
+Powershell script using windows forms to prompt for computer name during OSD deployment in PE. 
+
+Requires powershell feature added to WinPE. 
