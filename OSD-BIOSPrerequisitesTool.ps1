@@ -1,4 +1,4 @@
-﻿#========================================================================
+#========================================================================
 #
 #    Created:   2016-04-22
 #     Author:   Richard tracy
@@ -605,33 +605,37 @@ function Load-SystemProvider {
             If ($Is64Bit -and (Test-Path $DellCCTKPath)){
                 $HAPI = "hapint64.exe"
                 Write-OutputBox -OutputBoxMessage "Dell Command | Configure Tool Kit loading driver: $HAPI" -Type "INFO: " -Object Logging
-            }ElseIf(Test-Path $DellCCTKPathX86) {
+            }
+            ElseIf(Test-Path $DellCCTKPathX86) {
                 $HAPI = "hapint.exe"
                 Write-OutputBox -OutputBoxMessage "Dell Command | Configure Tool Kit loaded driver: $HAPI" -Type "INFO: " -Object Logging
-            }Else {
+
+                $private:returnCode = $null
+                $callexe = New-Object System.Diagnostics.ProcessStartInfo
+                $callexe.FileName = "$DellCCTKPath\HAPI\$HAPI"
+                $callexe.RedirectStandardError = $true
+                $callexe.RedirectStandardOutput = $true
+                $callexe.UseShellExecute = $false
+                $callexe.Arguments = "-i -k C-C-T-K -p ""$HAPI"" -q"
+                $callexe.WindowStyle = 'Minimized'
+                $process = New-Object System.Diagnostics.Process
+                $process.StartInfo = $callexe
+                $process.Start() | Out-Null
+                $process.WaitForExit()
+                $stdout = $process.StandardOutput.ReadToEnd()
+                $stderr = $process.StandardError.ReadToEnd()
+                Write-OutputBox -OutputBoxMessage ("Running: " + $callexe.FileName + " " + $callexe.Arguments) -Type "INFO: " -Object Logging
+                If ($process.ExitCode -eq 0){
+                    Write-OutputBox -OutputBoxMessage "Successfully installed CCTK HAPI drivers" -Type "INFO: " -Object Logging
+                }
+                Else{
+                    Write-OutputBox -OutputBoxMessage ("Unable to install the CCTK HAPI drivers with errorcode: " + $process.ExitCode) -Type "ERROR: " -Object Logging
+                }
+            }
+            Else {
                 Write-OutputBox -OutputBoxMessage "Unable to find Dell Command | Configure Tool Kit HAPI driver" -Type "ERROR: " -Object Logging
             }
-
-            $private:returnCode = $null
-            $callexe = New-Object System.Diagnostics.ProcessStartInfo
-            $callexe.FileName = "$DellCCTKPath\HAPI\$HAPI"
-            $callexe.RedirectStandardError = $true
-            $callexe.RedirectStandardOutput = $true
-            $callexe.UseShellExecute = $false
-            $callexe.Arguments = "-i -k C-C-T-K -p ""$HAPI"" -q"
-            $callexe.WindowStyle = 'Minimized'
-            $process = New-Object System.Diagnostics.Process
-            $process.StartInfo = $callexe
-            $process.Start() | Out-Null
-            $process.WaitForExit()
-            $stdout = $process.StandardOutput.ReadToEnd()
-            $stderr = $process.StandardError.ReadToEnd()
-            Write-OutputBox -OutputBoxMessage ("Running: " + $callexe.FileName + " " + $callexe.Arguments) -Type "INFO: " -Object Logging
-            If ($process.ExitCode -eq 0){
-                Write-OutputBox -OutputBoxMessage "Successfully installed CCTK HAPI drivers" -Type "INFO: " -Object Logging
-            }Else{
-                Write-OutputBox -OutputBoxMessage ("Unable to install the CCTK HAPI drivers with errorcode: " + $process.ExitCode) -Type "ERROR: " -Object Logging
-            }
+            
         }
         
         If ($UseDellPSProvider -eq $true){
