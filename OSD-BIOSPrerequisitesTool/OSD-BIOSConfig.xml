@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<app>
+	<title>BIOS Prerequisites Tool</title>
+	<version>1.0.2</version>
+	<configs>
+		<debugmode>False</debugmode>
+		<alwaysCheckBIOS>True</alwaysCheckBIOS>
+		<useRemote>
+			<remote>false</remote>
+			<path>\\SERVERNAME\SHARE\Path-to-Config.xml</path>
+		</useRemote>
+    
+		<additionalPowershellScripts>
+			<scriptFile>$scriptRoot\PowershellModules\functions.ps1</scriptFile>
+		</additionalPowershellScripts>
+
+		<additionalProviders>
+			<provider enabled="false">
+				<name>DellBIOSPowershell</name>
+				<platformsupport>Dell Inc.</platformsupport>
+				<path_x64>D:\DeploymentShare\Scripts\TRIBOOT\PowershellModules\DellBIOSProvider\1.0</path_x64>
+				<path_x86>D:\DeploymentShare\Scripts\TRIBOOT\PowershellModules\DellBIOSProviderX86\1.0</path_x86>
+			</provider>
+			<provider enabled="true">
+				<name>Dell Command | Configure Toolkit</name>
+				<platformsupport>Dell Inc.</platformsupport>
+				<path_x64>D:\DeploymentShare\Scripts\TRIBOOT\tools\Dell\X86_64</path_x64>
+				<path_x86>D:\DeploymentShare\Scripts\TRIBOOT\tools\Dell\X86</path_x86>
+			</provider>
+		</additionalProviders>		
+
+		<knownBIOSPasswords>
+			<cryptpassword>Vp/6rtVh5xVziVakKqKSlQ==</cryptpassword>
+			<cryptpassword>dLJ+P3TJ3kxFVxxlawpqzA==</cryptpassword>
+			<cryptpassword>az1IW4sWbG00Tc1tKXoLPA==</cryptpassword>
+		</knownBIOSPasswords>
+	</configs>
+
+	<supported>
+		<OSbuilds>
+			<OS id="minimum">
+				<name>Microsoft Windows 10 Enterprise (1511)</name>
+				<version>10586</version>
+				<arc>x64</arc>
+			</OS>
+		</OSbuilds>
+		<hardwarePlatforms>
+			<system>
+				<manufacturer>Dell Inc.</manufacturer>
+				<model>Latitude E7450</model>
+				<biosrev>A12</biosrev>
+			</system>
+			<system>
+				<manufacturer>Dell Inc.</manufacturer>
+				<model>Precision T5610</model>
+				<biosrev>A11</biosrev>
+			</system>
+			<system>
+				<manufacturer>Dell Inc.</manufacturer>
+				<model>Precision T7610</model>
+				<biosrev>A11</biosrev>
+			</system>
+			<system id="test">
+				<manufacturer>System manufacturer</manufacturer>
+				<model>System Product Name</model>
+				<biosrev>1101</biosrev>
+			</system>
+		</hardwarePlatforms>
+	</supported>
+	
+</app>
